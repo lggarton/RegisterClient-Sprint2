@@ -37,7 +37,8 @@
         <activity
             android:name=".CreateEmployeeActivity"
             android:label="@string/title_activity_create_employee"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".CreateTransactionActivity"></activity>
     </application>
 
 </manifest>
