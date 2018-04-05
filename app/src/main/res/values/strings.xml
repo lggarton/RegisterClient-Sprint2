@@ -58,4 +58,7 @@
     <string name="title_activity_main">MainActivity</string>
 
     <string name="edit_text_hint_product_lookup_code">Product Lookup Code</string>
+    <string name="transaction_summary">Transaction Summary</string>
+    <string name="returnMain">Return to Main Menu</string>
+    <string name="total">Total</string>
 </resources>

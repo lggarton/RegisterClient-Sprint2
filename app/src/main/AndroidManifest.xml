@@ -38,6 +38,13 @@
             android:name=".CreateEmployeeActivity"
             android:label="@string/title_activity_create_employee"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ReportActivity"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.uark.uarkregisterapp.ReportActivity"/>
+        </activity>
         <activity android:name=".CreateTransactionActivity"></activity>
     </application>
 
