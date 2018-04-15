@@ -6,7 +6,8 @@ public enum ApiObject implements PathElementInterface {
     NONE(""),
     PRODUCT("product/"),
     EMPLOYEE("employee/"),
-    TRANSACTION("transaction/");
+    TRANSACTION("transaction/"),
+    TRANSACTION_ENTRY("transactionentry/");
 
     @Override
     public String getPathValue() {
