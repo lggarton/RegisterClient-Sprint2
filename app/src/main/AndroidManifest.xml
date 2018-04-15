@@ -11,11 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LandingActivity">
+            <!-- Uncomment and remove from CreateTransactionActivity when done testing
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            -->
         </activity>
         <activity
             android:name=".ProductsListingActivity"
@@ -45,7 +47,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="edu.uark.uarkregisterapp.ReportActivity"/>
         </activity>
-        <activity android:name=".CreateTransactionActivity"></activity>
+        <activity android:name=".CreateTransactionActivity"
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="edu.uark.uarkregisterapp.MainActivity" />
+        </activity>
     </application>
 
 </manifest>
