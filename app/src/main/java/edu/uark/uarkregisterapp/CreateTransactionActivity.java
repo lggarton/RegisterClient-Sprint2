@@ -1,6 +1,7 @@
 package edu.uark.uarkregisterapp;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -20,6 +21,8 @@ import edu.uark.uarkregisterapp.models.api.Product;
 import edu.uark.uarkregisterapp.models.api.Transaction;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 import edu.uark.uarkregisterapp.models.api.services.ProductService;
+import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
+import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class CreateTransactionActivity extends AppCompatActivity {
 
@@ -74,6 +77,17 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
     public void onSubmitTransactionClick(View v) {
         transaction.setTotalAmount(getTotalTransactionCost());
+
+        List<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
+        for (TransactionEntry entry : this.transactionEntries) {
+            entryTransitions.add(new TransactionEntryTransition(entry));
+        }
+
+        Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
+        intent.putExtra(getString(R.string.intent_extra_transaction),
+                new TransactionTransition(transaction, entryTransitions));
+
+        startActivity(intent);
     }
 
     private double getTotalTransactionCost() {
