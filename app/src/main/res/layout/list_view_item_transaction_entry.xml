@@ -8,15 +8,16 @@
     <TextView
         android:id="@+id/list_view_item_transaction_entry_price"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="29dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
         android:text="@string/text_view_transaction_entry_price"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/button_delete_transaction_entry"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/text_view_create_transaction_product_lookup_code"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.727" />
 
     <TextView
         android:id="@+id/list_view_item_transaction_entry_count"
@@ -27,6 +28,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/text_view_transaction_entry_count"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="@+id/button_delete_transaction_entry"
         app:layout_constraintEnd_toStartOf="@+id/button_delete_transaction_entry"
         app:layout_constraintStart_toEndOf="@+id/list_view_item_transaction_entry_price"
@@ -40,6 +42,19 @@
         android:layout_marginTop="8dp"
         android:text="@string/button_delete"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_view_create_transaction_product_lookup_code"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        android:text="@string/text_view_products_lookup_code"
+        app:layout_constraintBottom_toBottomOf="@+id/button_delete_transaction_entry"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

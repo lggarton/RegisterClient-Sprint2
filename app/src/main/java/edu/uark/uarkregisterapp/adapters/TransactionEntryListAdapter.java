@@ -44,11 +44,14 @@ public class TransactionEntryListAdapter extends BaseAdapter implements ListAdap
             view = inflater.inflate(R.layout.list_view_item_transaction_entry, null);
         }
 
+        TextView lookupCodeTextView = (TextView) view.findViewById(R.id.text_view_create_transaction_product_lookup_code);
+        lookupCodeTextView.setText(listEntries.get(position).getLookupCode());
+
         TextView priceTextView = (TextView) view.findViewById(R.id.list_view_item_transaction_entry_price);
         priceTextView.setText(Double.toString(listEntries.get(position).getPrice()));
 
         TextView countTextView = (TextView) view.findViewById(R.id.list_view_item_transaction_entry_count);
-        priceTextView.setText(String.format(Locale.getDefault(), "%d", listEntries.get(position).getQuantity()));
+        countTextView.setText(String.format(Locale.getDefault(), "%d", listEntries.get(position).getQuantity()));
 
         Button deleteBtn = (Button)view.findViewById(R.id.button_delete_transaction_entry);
         deleteBtn.setOnClickListener(new View.OnClickListener(){

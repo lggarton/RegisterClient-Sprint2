@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -21,16 +22,21 @@ import edu.uark.uarkregisterapp.models.api.Product;
 import edu.uark.uarkregisterapp.models.api.Transaction;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 import edu.uark.uarkregisterapp.models.api.services.ProductService;
+import edu.uark.uarkregisterapp.models.transition.EmployeeTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class CreateTransactionActivity extends AppCompatActivity {
 
     private Transaction transaction;
+    private EmployeeTransition employeeTransition;
 
     private ListView mListView;
     private EditText mLookupCodeEditText;
     private EditText mQuantityEditText;
+    private Button mAddProductButton;
+    private Button mSubmitTransactionButton;
+
     private TransactionEntryListAdapter listAdapter;
     private ArrayList<TransactionEntry> transactionEntries;
 
@@ -41,15 +47,21 @@ public class CreateTransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_transaction);
 
+        this.employeeTransition = this.getIntent().getParcelableExtra(this.getString(R.string.intent_extra_employee));
+
         transaction = new Transaction();
         transaction.setId(UUID.randomUUID());
-        // TODO: Get an intent of the employee id to set the transaction cashierID here
+        // TODO: Change the cashierId to a string and use EmployeeTransition.getEmployeeId
+        //transaction.setCashierId(employeeTransition.getId());
+        // TODO: Change the transaction type to a isRefund bool and set it to false
 
         availableProducts = new ArrayList<Product>();
 
         mListView = (ListView)findViewById(R.id.list_view_create_transaction);
         mLookupCodeEditText = (EditText)findViewById(R.id.edit_text_create_transaction_product_lookup);
         mQuantityEditText = (EditText)findViewById(R.id.edit_text_create_transaction_product_quantity);
+        mAddProductButton = (Button)findViewById(R.id.button_create_transaction_add_product);
+        mSubmitTransactionButton = (Button)findViewById(R.id.button_submit_transaction);
 
         this.transactionEntries = new ArrayList<TransactionEntry>();
 
@@ -64,18 +76,39 @@ public class CreateTransactionActivity extends AppCompatActivity {
     }
 
     public void onAddTransactionEntryClick(View v) {
+        String lookup = this.mLookupCodeEditText.getText().toString();
+        Product selectedProduct = getProduct(lookup);
+        if (selectedProduct == null) {
+            showProductNotFoundDialog();
+            return;
+        }
+
         TransactionEntry newEntry = new TransactionEntry();
-        newEntry.setLookupCode(this.mLookupCodeEditText.getText().toString());
+        newEntry.setLookupCode(lookup);
         newEntry.setQuantity(Integer.parseInt(this.mQuantityEditText.getText().toString()));
         newEntry.setId(UUID.randomUUID());
         newEntry.setTransactionId(transaction.getId());
-        // TODO: Set the product's price
+        newEntry.setPrice(selectedProduct.getPrice());
 
         transactionEntries.add(newEntry);
         listAdapter.notifyDataSetChanged();
     }
 
+    private Product getProduct(String lookupCode) {
+        for (Product product : this.availableProducts) {
+            if (product.getLookupCode().equals(lookupCode)) {
+                return product;
+            }
+        }
+        return null;
+    }
+
     public void onSubmitTransactionClick(View v) {
+        if (transactionEntries.size() <= 0) {
+            showNoEntriesDialog();
+            return;
+        }
+
         transaction.setTotalAmount(getTotalTransactionCost());
 
         List<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
@@ -99,7 +132,44 @@ public class CreateTransactionActivity extends AppCompatActivity {
         return total;
     }
 
+    private void showNoEntriesDialog() {
+        new AlertDialog.Builder(CreateTransactionActivity.this).
+                setMessage(R.string.alert_dialog_no_entries).
+                setPositiveButton(
+                        R.string.button_dismiss,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }
+                ).
+                create().
+                show();
+    }
+
+    private void showProductNotFoundDialog() {
+        new AlertDialog.Builder(CreateTransactionActivity.this).
+                setMessage(R.string.alert_dialog_product_not_found).
+                setPositiveButton(
+                        R.string.button_dismiss,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }
+                ).
+                create().
+                show();
+    }
+
     private class RetrieveProductsTask extends AsyncTask<Void, Void, ApiResponse<List<Product>>> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mAddProductButton.setEnabled(false);
+            mAddProductButton.setText(R.string.button_add_product_loading);
+        }
 
         @Override
         protected ApiResponse<List<Product>> doInBackground(Void... params) {
@@ -133,9 +203,10 @@ public class CreateTransactionActivity extends AppCompatActivity {
                         ).
                         create().
                         show();
+            } else {
+                mAddProductButton.setEnabled(true);
+                mAddProductButton.setText(R.string.button_add_product);
             }
         }
-
-
     }
 }
