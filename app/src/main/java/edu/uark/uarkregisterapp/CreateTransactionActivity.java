@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import edu.uark.uarkregisterapp.adapters.TransactionEntryListAdapter;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
@@ -14,7 +13,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
     private ListView mListView;
     private TransactionEntryListAdapter listAdapter;
-    private List<TransactionEntry> transactionEntries;
+    private ArrayList<TransactionEntry> transactionEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
