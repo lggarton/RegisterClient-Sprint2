@@ -24,11 +24,11 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
         return this;
     }
 
-    private UUID cashierId;
-    public UUID getCashierId() {
+    private String cashierId;
+    public String getCashierId() {
         return this.cashierId;
     }
-    public Transaction setCashierId(UUID id) {
+    public Transaction setCashierId(String id) {
         this.cashierId = id;
         return this;
     }
@@ -42,12 +42,12 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
         return this;
     }
 
-    private int transactionType;
-    public int getTransactionType() {
-        return this.transactionType;
+    private boolean isRefund;
+    public boolean getIsRefund() {
+        return this.isRefund;
     }
-    public Transaction setTransactionType(int type) {
-        this.transactionType = type;
+    public Transaction setTransactionType(boolean isRefund) {
+        this.isRefund = isRefund;
         return this;
     }
 
@@ -76,13 +76,10 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
             this.id = UUID.fromString(value);
         }
 
-        value = rawJsonObject.optString(TransactionFieldName.CASHIER_ID.getFieldName());
-        if (!StringUtils.isBlank(value)) {
-            this.cashierId = UUID.fromString(value);
-        }
+        this.cashierId = rawJsonObject.optString(TransactionFieldName.CASHIER_ID.getFieldName());
 
         this.totalAmount = rawJsonObject.optDouble(TransactionFieldName.TOTAL_AMOUNT.getFieldName());
-        this.transactionType = rawJsonObject.optInt(TransactionFieldName.TRANSACTION_TYPE.getFieldName());
+        this.isRefund = rawJsonObject.optBoolean(TransactionFieldName.IS_REFUND.getFieldName());
 
         value = rawJsonObject.optString(TransactionFieldName.REFERENCE_ID.getFieldName());
         if (!StringUtils.isBlank(value)) {
@@ -107,9 +104,9 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
 
         try {
             jsonObject.put(TransactionFieldName.ID.getFieldName(), this.id.toString());
-            jsonObject.put(TransactionFieldName.CASHIER_ID.getFieldName(), this.cashierId.toString());
+            jsonObject.put(TransactionFieldName.CASHIER_ID.getFieldName(), this.cashierId);
             jsonObject.put(TransactionFieldName.TOTAL_AMOUNT.getFieldName(), this.totalAmount);
-            jsonObject.put(TransactionFieldName.TRANSACTION_TYPE.getFieldName(), this.transactionType);
+            jsonObject.put(TransactionFieldName.IS_REFUND.getFieldName(), this.isRefund);
             jsonObject.put(TransactionFieldName.REFERENCE_ID.getFieldName(), this.referenceId.toString());
             jsonObject.put(TransactionFieldName.CREATED_ON.getFieldName(), (new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)).format(this.createdOn));
         } catch (JSONException e) {
@@ -121,9 +118,9 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
 
     public Transaction() {
         this.id = new UUID(0, 0);
-        this.cashierId = new UUID(0, 0);
+        this.cashierId = StringUtils.EMPTY;
         this.totalAmount = 0.0;
-        this.transactionType = 0;
+        this.isRefund = false;
         this.referenceId = new UUID(0, 0);
         this.createdOn = new Date();
     }

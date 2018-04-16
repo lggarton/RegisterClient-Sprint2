@@ -32,7 +32,7 @@ public class TransactionEntryListAdapter extends BaseAdapter implements ListAdap
 
     @Override
     public long getItemId(int i) {
-        return listEntries.get(i).getId().getMostSignificantBits() & Long.MAX_VALUE;
+        return listEntries.get(i).getEntryId().getMostSignificantBits() & Long.MAX_VALUE;
     }
 
     @NonNull

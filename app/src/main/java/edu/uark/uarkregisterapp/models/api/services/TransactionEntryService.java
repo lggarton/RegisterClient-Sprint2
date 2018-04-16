@@ -23,7 +23,7 @@ public class TransactionEntryService extends BaseRemoteService {
     public ApiResponse<TransactionEntry> updateTransactionEntry(TransactionEntry entry) {
         return this.readTransactionEntryDetailsFromResponse(
                 this.<TransactionEntry>performPutRequest(
-                        this.buildPath(entry.getId())
+                        this.buildPath(entry.getEntryId())
                         , entry.convertToJson()
                 )
         );

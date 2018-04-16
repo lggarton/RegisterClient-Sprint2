@@ -12,13 +12,12 @@ import edu.uark.uarkregisterapp.commands.converters.UUIDToByteConverterCommand;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 
 public class TransactionEntryTransition implements Parcelable {
-    // This is the Entry ID
-    private UUID id;
-    public UUID getId() {
-        return this.id;
+    private UUID entryId;
+    public UUID getEntryId() {
+        return this.entryId;
     }
     public TransactionEntryTransition setId(UUID id) {
-        this.id = id;
+        this.entryId = id;
         return this;
     }
 
@@ -58,9 +57,10 @@ public class TransactionEntryTransition implements Parcelable {
         return this;
     }
 
+
     @Override
     public void writeToParcel(Parcel destination, int flags) {
-        destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.id).execute());
+        destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.entryId).execute());
         destination.writeString(this.lookupCode);
         destination.writeInt(this.quantity);
         destination.writeDouble(this.price);
@@ -78,7 +78,7 @@ public class TransactionEntryTransition implements Parcelable {
     };
 
     public TransactionEntryTransition() {
-        this.id = new UUID(0, 0);
+        this.entryId = new UUID(0, 0);
         this.lookupCode = StringUtils.EMPTY;
         this.quantity = 0;
         this.price = 0.0;
@@ -86,7 +86,7 @@ public class TransactionEntryTransition implements Parcelable {
     }
 
     public TransactionEntryTransition(TransactionEntry transactionEntry) {
-        this.id = transactionEntry.getId();
+        this.entryId = transactionEntry.getEntryId();
         this.lookupCode = transactionEntry.getLookupCode();
         this.quantity = transactionEntry.getQuantity();
         this.price = transactionEntry.getPrice();
@@ -94,7 +94,7 @@ public class TransactionEntryTransition implements Parcelable {
     }
 
     public TransactionEntryTransition(Parcel transactionEntryTransitionParcel) {
-        this.id = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionEntryTransitionParcel.createByteArray()).execute();
+        this.entryId = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionEntryTransitionParcel.createByteArray()).execute();
         this.lookupCode = transactionEntryTransitionParcel.readString();
         this.quantity = transactionEntryTransitionParcel.readInt();
         this.price = transactionEntryTransitionParcel.readDouble();

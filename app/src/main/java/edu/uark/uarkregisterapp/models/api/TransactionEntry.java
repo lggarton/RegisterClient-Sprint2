@@ -13,12 +13,12 @@ import edu.uark.uarkregisterapp.models.api.interfaces.LoadFromJsonInterface;
 public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInterface {
 
     // This is the Entry ID
-    private UUID id;
-    public UUID getId() {
-        return this.id;
+    private UUID entryId;
+    public UUID getEntryId() {
+        return this.entryId;
     }
     public TransactionEntry setId(UUID id) {
-        this.id = id;
+        this.entryId = id;
         return this;
     }
 
@@ -60,9 +60,9 @@ public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInt
 
     @Override
     public TransactionEntry loadFromJson(JSONObject rawJsonObject) {
-        String value = rawJsonObject.optString(TransactionEntryFieldName.ID.getFieldName());
+        String value = rawJsonObject.optString(TransactionEntryFieldName.ENTRY_ID.getFieldName());
         if (!StringUtils.isBlank(value)) {
-            this.id = UUID.fromString(value);
+            this.entryId = UUID.fromString(value);
         }
 
         this.lookupCode = rawJsonObject.optString(TransactionEntryFieldName.LOOKUP_CODE.getFieldName());
@@ -82,7 +82,7 @@ public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInt
         JSONObject jsonObject = new JSONObject();
 
         try {
-            jsonObject.put(TransactionEntryFieldName.ID.getFieldName(), this.id.toString());
+            jsonObject.put(TransactionEntryFieldName.ENTRY_ID.getFieldName(), this.entryId.toString());
             jsonObject.put(TransactionEntryFieldName.LOOKUP_CODE.getFieldName(), this.lookupCode);
             jsonObject.put(TransactionEntryFieldName.QUANTITY.getFieldName(), this.quantity);
             jsonObject.put(TransactionEntryFieldName.PRICE.getFieldName(), this.price);
@@ -95,7 +95,7 @@ public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInt
     }
 
     public TransactionEntry() {
-        this.id = new UUID(0, 0);
+        this.entryId = new UUID(0, 0);
         this.lookupCode = StringUtils.EMPTY;
         this.quantity = 0;
         this.price = 0.0;

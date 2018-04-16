@@ -6,7 +6,7 @@ public enum TransactionFieldName implements FieldNameInterface {
     ID("id"),
     CASHIER_ID("cashierId"),
     TOTAL_AMOUNT("totalAmount"),
-    TRANSACTION_TYPE("transactionType"),
+    IS_REFUND("is_refund"),
     REFERENCE_ID("referenceId"),
     CREATED_ON("createdOn");
 

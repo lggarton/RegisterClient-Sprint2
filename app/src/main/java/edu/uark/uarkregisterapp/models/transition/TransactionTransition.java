@@ -3,6 +3,8 @@ package edu.uark.uarkregisterapp.models.transition;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +27,11 @@ public class TransactionTransition implements Parcelable {
         return this;
     }
 
-    private UUID cashierId;
-    public UUID getCashierId() {
+    private String cashierId;
+    public String getCashierId() {
         return this.cashierId;
     }
-    public TransactionTransition setCashierId(UUID id) {
+    public TransactionTransition setCashierId(String id) {
         this.cashierId = id;
         return this;
     }
@@ -43,12 +45,12 @@ public class TransactionTransition implements Parcelable {
         return this;
     }
 
-    private int transactionType;
-    public int getTransactionType() {
-        return this.transactionType;
+    private boolean isRefund;
+    public boolean getIsRefund() {
+        return this.isRefund;
     }
-    public TransactionTransition setTransactionType(int type) {
-        this.transactionType = type;
+    public TransactionTransition setTransactionType(boolean isRefund) {
+        this.isRefund = isRefund;
         return this;
     }
 
@@ -82,9 +84,9 @@ public class TransactionTransition implements Parcelable {
     @Override
     public void writeToParcel(Parcel destination, int flags) {
         destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.id).execute());
-        destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.cashierId).execute());
+        destination.writeString(this.cashierId);
         destination.writeDouble(this.totalAmount);
-        destination.writeInt(this.transactionType);
+        destination.writeInt(this.isRefund ? 1 : 0);
         destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.referenceId).execute());
         destination.writeLong(this.createdOn.getTime());
         destination.writeTypedList(this.entryTransitions);
@@ -102,9 +104,9 @@ public class TransactionTransition implements Parcelable {
 
     public TransactionTransition() {
         this.id = new UUID(0, 0);
-        this.cashierId = new UUID(0, 0);
+        this.cashierId = StringUtils.EMPTY;
         this.totalAmount = 0.0;
-        this.transactionType = 0;
+        this.isRefund = false;
         this.referenceId = new UUID(0, 0);
         this.createdOn = new Date();
         this.entryTransitions = new ArrayList<TransactionEntryTransition>();
@@ -114,7 +116,7 @@ public class TransactionTransition implements Parcelable {
         this.id = transaction.getId();
         this.cashierId = transaction.getCashierId();
         this.totalAmount = transaction.getTotalAmount();
-        this.transactionType = transaction.getTransactionType();
+        this.isRefund = transaction.getIsRefund();
         this.referenceId = transaction.getReferenceId();
         this.createdOn = transaction.getCreatedOn();
         this.entryTransitions = new ArrayList<TransactionEntryTransition>(transactionEntriesTransitions);
@@ -122,9 +124,9 @@ public class TransactionTransition implements Parcelable {
 
     public TransactionTransition(Parcel transactionTransitionParcel) {
         this.id = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionTransitionParcel.createByteArray()).execute();
-        this.cashierId = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionTransitionParcel.createByteArray()).execute();
+        this.cashierId = transactionTransitionParcel.readString();
         this.totalAmount = transactionTransitionParcel.readDouble();
-        this.transactionType = transactionTransitionParcel.readInt();
+        this.isRefund = transactionTransitionParcel.readInt() != 0;
         this.referenceId = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionTransitionParcel.createByteArray()).execute();
 
         this.createdOn = new Date();
