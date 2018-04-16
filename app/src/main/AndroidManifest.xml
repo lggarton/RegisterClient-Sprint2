@@ -48,7 +48,8 @@
                 android:value="edu.uark.uarkregisterapp.ReportActivity"/>
         </activity>
         <activity android:name=".CreateTransactionActivity"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName=".MainActivity"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

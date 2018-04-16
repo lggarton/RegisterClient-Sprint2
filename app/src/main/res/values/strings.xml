@@ -61,6 +61,9 @@
     <string name="edit_text_hint_product_quantity">Quantity</string>
     <string name="button_add_product">Add Product</string>
     <string name="button_submit_transaction">Submit Transaction</string>
+    <string name="text_view_transaction_entry_price">Price</string>
+    <string name="text_view_transaction_entry_count">0</string>
+
     <string name="transaction_summary">Transaction Summary</string>
     <string name="returnMain">Return to Main Menu</string>
     <string name="total">Total</string>
