@@ -48,7 +48,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_editor_absoluteX="@dimen/right_margin" />
 
-    <include android:layout="@layout/activity_products_listing"/>
+    <include layout="@layout/activity_products_listing"/>
     <ScrollView
             android:id="@+id/scroll"
             android:layout_width="fill_parent"
