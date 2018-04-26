@@ -5,9 +5,7 @@ import android.os.Parcelable;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import edu.uark.uarkregisterapp.commands.converters.ByteToUUIDConverterCommand;
@@ -72,14 +70,6 @@ public class TransactionTransition implements Parcelable {
         return this;
     }
 
-    private List<TransactionEntryTransition> entryTransitions;
-    public List<TransactionEntryTransition> getEntryTransitions() {
-        return this.entryTransitions;
-    }
-    public TransactionTransition setEntryTransitions(List<TransactionEntryTransition> entries) {
-        this.entryTransitions = entries;
-        return this;
-    }
 
     @Override
     public void writeToParcel(Parcel destination, int flags) {
@@ -89,7 +79,6 @@ public class TransactionTransition implements Parcelable {
         destination.writeInt(this.isRefund ? 1 : 0);
         destination.writeByteArray((new UUIDToByteConverterCommand()).setValueToConvert(this.referenceId).execute());
         destination.writeLong(this.createdOn.getTime());
-        destination.writeTypedList(this.entryTransitions);
     }
 
     public static final Parcelable.Creator<TransactionTransition> CREATOR = new Parcelable.Creator<TransactionTransition>() {
@@ -109,17 +98,15 @@ public class TransactionTransition implements Parcelable {
         this.isRefund = false;
         this.referenceId = new UUID(0, 0);
         this.createdOn = new Date();
-        this.entryTransitions = new ArrayList<TransactionEntryTransition>();
     }
 
-    public TransactionTransition(Transaction transaction, List<TransactionEntryTransition> transactionEntriesTransitions) {
+    public TransactionTransition(Transaction transaction) {
         this.id = transaction.getId();
         this.cashierId = transaction.getCashierId();
         this.totalAmount = transaction.getTotalAmount();
         this.isRefund = transaction.getIsRefund();
         this.referenceId = transaction.getReferenceId();
         this.createdOn = transaction.getCreatedOn();
-        this.entryTransitions = new ArrayList<TransactionEntryTransition>(transactionEntriesTransitions);
     }
 
     public TransactionTransition(Parcel transactionTransitionParcel) {
@@ -130,9 +117,6 @@ public class TransactionTransition implements Parcelable {
         this.referenceId = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionTransitionParcel.createByteArray()).execute();
 
         this.createdOn = new Date();
-
-        this.entryTransitions = new ArrayList<TransactionEntryTransition>();
-        transactionTransitionParcel.readTypedList(this.entryTransitions, TransactionEntryTransition.CREATOR);
 
         this.createdOn.setTime(transactionTransitionParcel.readLong());
     }

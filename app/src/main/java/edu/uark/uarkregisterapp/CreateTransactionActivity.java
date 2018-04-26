@@ -147,14 +147,16 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
         transaction.setTotalAmount(getTotalTransactionCost());
 
-        List<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
+        ArrayList<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
         for (TransactionEntry entry : this.transactionEntries) {
             entryTransitions.add(new TransactionEntryTransition(entry));
         }
 
         Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
-        intent.putExtra(getString(R.string.intent_extra_transaction),
-                new TransactionTransition(transaction, entryTransitions));
+        intent.putParcelableArrayListExtra(getString(R.string.intent_extra_transaction_entries), entryTransitions);
+        intent.putExtra(getString(R.string.intent_extra_transaction), new TransactionTransition(this.transaction));
+//        intent.putExtra(getString(R.string.intent_extra_transaction),
+//                entryTransitions[0]);
 
         startActivity(intent);
     }

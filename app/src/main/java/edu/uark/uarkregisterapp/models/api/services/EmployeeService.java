@@ -1,5 +1,7 @@
 package edu.uark.uarkregisterapp.models.api.services;
 
+import android.util.Log;
+
 import org.json.JSONObject;
 
 import java.util.UUID;
@@ -59,6 +61,8 @@ public class EmployeeService extends BaseRemoteService {
     }
 
     public ApiResponse<Employee> logIn(EmployeeLogin employeeLogin) {
+        Log.d("login", this.buildPath((new PathElementInterface[] { EmployeeApiMethod.LOGIN })).toString());
+        Log.d("login", employeeLogin.convertToJson().toString());
         return this.readEmployeeDetailsFromResponse(
             this.<Employee>performPostRequest(
                 this.buildPath(

@@ -12,6 +12,8 @@ import edu.uark.uarkregisterapp.commands.converters.UUIDToByteConverterCommand;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 
 public class TransactionEntryTransition implements Parcelable {
+    private static String TAG = "TET";
+
     private UUID entryId;
     public UUID getEntryId() {
         return this.entryId;
@@ -94,6 +96,7 @@ public class TransactionEntryTransition implements Parcelable {
     }
 
     public TransactionEntryTransition(Parcel transactionEntryTransitionParcel) {
+
         this.entryId = (new ByteToUUIDConverterCommand()).setValueToConvert(transactionEntryTransitionParcel.createByteArray()).execute();
         this.lookupCode = transactionEntryTransitionParcel.readString();
         this.quantity = transactionEntryTransitionParcel.readInt();
