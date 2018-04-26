@@ -13,12 +13,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import edu.uark.uarkregisterapp.CreateTransactionActivity;
 import edu.uark.uarkregisterapp.R;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 
 public class TransactionEntryListAdapter extends BaseAdapter implements ListAdapter{
     private ArrayList<TransactionEntry> listEntries = new ArrayList<TransactionEntry>();
     private Context context;
+    private final CreateTransactionActivity cta;
 
     @Override
     public int getCount() {
@@ -48,16 +50,18 @@ public class TransactionEntryListAdapter extends BaseAdapter implements ListAdap
         lookupCodeTextView.setText(listEntries.get(position).getLookupCode());
 
         TextView priceTextView = (TextView) view.findViewById(R.id.list_view_item_transaction_entry_price);
-        priceTextView.setText(Double.toString(listEntries.get(position).getPrice()));
+        priceTextView.setText(String.format(Locale.getDefault(), "$%.2f" , listEntries.get(position).getPrice()));
 
         TextView countTextView = (TextView) view.findViewById(R.id.list_view_item_transaction_entry_count);
-        countTextView.setText(String.format(Locale.getDefault(), "%d", listEntries.get(position).getQuantity()));
+        countTextView.setText(String.format(Locale.getDefault(), "x%d", listEntries.get(position).getQuantity()));
 
         Button deleteBtn = (Button)view.findViewById(R.id.button_delete_transaction_entry);
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                TransactionEntry toRemove = listEntries.get(position);
                 listEntries.remove(position);
+                cta.removeEntryQuantity(toRemove);
                 notifyDataSetChanged();
             }
         });
@@ -65,8 +69,9 @@ public class TransactionEntryListAdapter extends BaseAdapter implements ListAdap
         return view;
     }
 
-    public TransactionEntryListAdapter(@NonNull Context context, ArrayList<TransactionEntry> entries) {
+    public TransactionEntryListAdapter(@NonNull Context context, ArrayList<TransactionEntry> entries, final CreateTransactionActivity cta) {
         this.context = context;
         this.listEntries = entries;
+        this.cta = cta;
     }
 }

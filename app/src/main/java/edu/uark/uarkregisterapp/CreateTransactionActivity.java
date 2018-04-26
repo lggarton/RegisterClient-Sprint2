@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +29,8 @@ import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class CreateTransactionActivity extends AppCompatActivity {
 
+    public static final String TAG = "CreateTransaction";
+
     private Transaction transaction;
     private EmployeeTransition employeeTransition;
 
@@ -40,6 +43,8 @@ public class CreateTransactionActivity extends AppCompatActivity {
     private TransactionEntryListAdapter listAdapter;
     private ArrayList<TransactionEntry> transactionEntries;
 
+    private HashMap<String, Integer> totalQuantities;
+
     List<Product> availableProducts;
 
     @Override
@@ -47,13 +52,16 @@ public class CreateTransactionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_transaction);
 
+        this.totalQuantities = new HashMap<>();
+
         this.employeeTransition = this.getIntent().getParcelableExtra(this.getString(R.string.intent_extra_employee));
 
         transaction = new Transaction();
         transaction.setId(UUID.randomUUID());
-        // TODO: Change the cashierId to a string and use EmployeeTransition.getEmployeeId
-        //transaction.setCashierId(employeeTransition.getId());
-        // TODO: Change the transaction type to a isRefund bool and set it to false
+        if (this.employeeTransition != null) {
+            transaction.setCashierId(this.employeeTransition.getEmployeeId());
+        }
+        transaction.setIsRefund(false);
 
         availableProducts = new ArrayList<Product>();
 
@@ -65,7 +73,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
         this.transactionEntries = new ArrayList<TransactionEntry>();
 
-        this.listAdapter = new TransactionEntryListAdapter(this, this.transactionEntries);
+        this.listAdapter = new TransactionEntryListAdapter(this, this.transactionEntries, this);
         this.mListView.setAdapter(this.listAdapter);
     }
 
@@ -83,6 +91,19 @@ public class CreateTransactionActivity extends AppCompatActivity {
             return;
         }
 
+        Integer requestedQuantity = Integer.parseInt(this.mQuantityEditText.getText().toString());
+        if (!canAddAdditionalProduct(selectedProduct, requestedQuantity)) {
+            showQuantityTooHighDialog();
+            return;
+        }
+
+        int currentQuantity = 0;
+        if (this.totalQuantities.containsKey(selectedProduct.getLookupCode())) {
+            currentQuantity = this.totalQuantities.get(selectedProduct.getLookupCode());
+        }
+        currentQuantity += requestedQuantity;
+        this.totalQuantities.put(selectedProduct.getLookupCode(), currentQuantity);
+
         TransactionEntry newEntry = new TransactionEntry();
         newEntry.setLookupCode(lookup);
         newEntry.setQuantity(Integer.parseInt(this.mQuantityEditText.getText().toString()));
@@ -92,6 +113,15 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
         transactionEntries.add(newEntry);
         listAdapter.notifyDataSetChanged();
+    }
+
+    private boolean canAddAdditionalProduct(Product product, int requestedQuantity) {
+        int maxQuantity = product.getCount();
+        int currentQuantity = 0;
+        if (this.totalQuantities.containsKey(product.getLookupCode())) {
+            currentQuantity = this.totalQuantities.get(product.getLookupCode());
+        }
+        return (requestedQuantity + currentQuantity) <= maxQuantity;
     }
 
     private Product getProduct(String lookupCode) {
@@ -132,6 +162,21 @@ public class CreateTransactionActivity extends AppCompatActivity {
         return total;
     }
 
+    private void showQuantityTooHighDialog() {
+        new AlertDialog.Builder(CreateTransactionActivity.this).
+                setMessage(R.string.alert_dialog_not_enough_product).
+                setPositiveButton(
+                        R.string.button_dismiss,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }
+                ).
+                create().
+                show();
+    }
+
     private void showNoEntriesDialog() {
         new AlertDialog.Builder(CreateTransactionActivity.this).
                 setMessage(R.string.alert_dialog_no_entries).
@@ -160,6 +205,12 @@ public class CreateTransactionActivity extends AppCompatActivity {
                 ).
                 create().
                 show();
+    }
+
+    public void removeEntryQuantity(TransactionEntry entry) {
+        String lookup = entry.getLookupCode();
+        int quantityToRemove = entry.getQuantity();
+        totalQuantities.put(lookup, totalQuantities.get(lookup) - quantityToRemove);
     }
 
     private class RetrieveProductsTask extends AsyncTask<Void, Void, ApiResponse<List<Product>>> {

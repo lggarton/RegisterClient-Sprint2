@@ -46,7 +46,7 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
     public boolean getIsRefund() {
         return this.isRefund;
     }
-    public Transaction setTransactionType(boolean isRefund) {
+    public Transaction setIsRefund(boolean isRefund) {
         this.isRefund = isRefund;
         return this;
     }

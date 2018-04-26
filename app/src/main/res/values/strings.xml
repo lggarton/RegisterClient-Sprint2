@@ -66,6 +66,7 @@
     <string name="text_view_transaction_entry_count">0</string>
     <string name="intent_extra_transaction">intent_extra_transaction</string>
     <string name="alert_dialog_no_entries">Add some product entries before submitting the transaction!</string>
+    <string name="alert_dialog_not_enough_product">Error, that product does not have that much quantity available.</string>
     <string name="alert_dialog_product_not_found">Product not found!</string>
 
     <string name="transaction_summary">Transaction Summary</string>
