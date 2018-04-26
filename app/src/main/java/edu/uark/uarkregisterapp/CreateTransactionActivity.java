@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -84,6 +86,10 @@ public class CreateTransactionActivity extends AppCompatActivity {
     }
 
     public void onAddTransactionEntryClick(View v) {
+        if (!checkValidForm()) {
+            return;
+        }
+
         String lookup = this.mLookupCodeEditText.getText().toString();
         Product selectedProduct = getProduct(lookup);
         if (selectedProduct == null) {
@@ -160,6 +166,54 @@ public class CreateTransactionActivity extends AppCompatActivity {
         }
 
         return total;
+    }
+
+    private boolean checkValidForm() {
+        String lookup = this.mLookupCodeEditText.getText().toString();
+        if (StringUtils.isEmpty(lookup)) {
+            showBadLookupDialog();
+            return false;
+        }
+        String quantity = this.mQuantityEditText.getText().toString();
+        if (StringUtils.isEmpty(quantity)) {
+            showBadQuantityDialog();
+            return false;
+        }
+        if (Integer.parseInt(quantity) <= 0) {
+            showBadQuantityDialog();
+            return false;
+        }
+        return true;
+    }
+
+    private void showBadLookupDialog() {
+        new AlertDialog.Builder(CreateTransactionActivity.this).
+                setMessage(R.string.alert_dialog_bad_lookup).
+                setPositiveButton(
+                        R.string.button_dismiss,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }
+                ).
+                create().
+                show();
+    }
+
+    private void showBadQuantityDialog() {
+        new AlertDialog.Builder(CreateTransactionActivity.this).
+                setMessage(R.string.alert_dialog_bad_quantity).
+                setPositiveButton(
+                        R.string.button_dismiss,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        }
+                ).
+                create().
+                show();
     }
 
     private void showQuantityTooHighDialog() {
