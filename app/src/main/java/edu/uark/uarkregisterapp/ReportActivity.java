@@ -6,14 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
-import java.util.ArrayList;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 import edu.uark.uarkregisterapp.adapters.TransactionReportAdapter;
 import edu.uark.uarkregisterapp.models.api.ApiResponse;
 import edu.uark.uarkregisterapp.models.api.Transaction;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
+import edu.uark.uarkregisterapp.models.api.services.TransactionEntryService;
 import edu.uark.uarkregisterapp.models.api.services.TransactionService;
 import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
@@ -64,6 +66,10 @@ public class ReportActivity extends AppCompatActivity {
 
     private void uploadTransactionWithEntries() {
         (new CreateTransactionTask()).execute(this.transaction);
+        for (TransactionEntryTransition transition : this.arrayList) {
+            TransactionEntry entry = new TransactionEntry(transition);
+            (new CreateTransactionEntryTask()).execute(entry);
+        }
     }
 
     private class CreateTransactionTask extends AsyncTask<Transaction, Void, ApiResponse<Transaction>> {
@@ -98,10 +104,11 @@ public class ReportActivity extends AppCompatActivity {
     private class CreateTransactionEntryTask extends AsyncTask<TransactionEntry, Void, ApiResponse<TransactionEntry>> {
         @Override
         protected ApiResponse<TransactionEntry> doInBackground(TransactionEntry... transactionEntries) {
-//            if (transactionEntries.length > 0) {
-//                0;
-//            }
-            return null;
+            if (transactionEntries.length > 0) {
+                return (new TransactionEntryService()).createTransactionEntry(transactionEntries[0]);
+            } else {
+                return (new ApiResponse<TransactionEntry>()).setValidResponse(false);
+            }
         }
 
         @Override

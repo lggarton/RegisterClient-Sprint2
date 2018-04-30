@@ -64,7 +64,7 @@ public class TransactionEntryService extends BaseRemoteService {
         return apiResponse;
     }
 
-    TransactionEntryService(ApiObject apiObject) {
+    public TransactionEntryService() {
         super(ApiObject.TRANSACTION_ENTRY);
     }
 }
