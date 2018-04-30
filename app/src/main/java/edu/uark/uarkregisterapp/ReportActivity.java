@@ -6,10 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import java.util.ArrayList;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import java.util.ArrayList;
 
 import edu.uark.uarkregisterapp.adapters.TransactionReportAdapter;
 import edu.uark.uarkregisterapp.models.api.ApiResponse;
@@ -39,6 +38,7 @@ public class ReportActivity extends AppCompatActivity {
         this.reportAdapter = new TransactionReportAdapter(this, this.arrayList);
         this.getProductsListView().setAdapter(this.reportAdapter);
 
+        this.transaction = new Transaction(this.transactionTransition);
         TextView totalAmountText = (TextView) this.findViewById(R.id.total);
         totalAmountText.setText(Double.toString(transaction.getTotalAmount()));
 
