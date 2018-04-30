@@ -19,6 +19,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 
         this.employeeTransition = this.getIntent().getParcelableExtra(this.getString(R.string.intent_extra_employee));
+        // for demo purposes
+        if (this.employeeTransition == null) {
+            this.employeeTransition = new EmployeeTransition().setEmployeeId("0001")
+                    .setActive(true).setFirstName("Bob").setLastName("Tom");
+        }
     }
 
     @Override
@@ -29,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void beginTransactionButtonOnClick(View view) {
-        this.displayFunctionalityNotAvailableDialog();
+        Intent intent = new Intent(getApplicationContext(), CreateTransactionActivity.class);
+        intent.putExtra(getString(R.string.intent_extra_employee), this.employeeTransition);
+        startActivity(intent);
     }
 
     public void productSalesReportButtonOnClick(View view) {
