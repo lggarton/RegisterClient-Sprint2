@@ -27,8 +27,6 @@ public class ReportActivity extends AppCompatActivity {
     private Transaction transaction;
     private ArrayList<TransactionEntryTransition> arrayList;
     private TransactionReportAdapter reportAdapter;
-    private double totalAmount;
-    TextView text;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,10 +39,8 @@ public class ReportActivity extends AppCompatActivity {
         this.reportAdapter = new TransactionReportAdapter(this, this.arrayList);
         this.getProductsListView().setAdapter(this.reportAdapter);
 
-//        text = (TextView)findViewById(R.id.total);
-//        this.totalAmount = transaction.getTotalAmount();
-//        this.getIntent().putExtra("Total", totalAmount);
-        // cant get the total but the products are listed
+        TextView totalAmountText = (TextView) this.findViewById(R.id.total);
+        totalAmountText.setText(Double.toString(transaction.getTotalAmount()));
 
         returnButton = findViewById(R.id.returnButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +48,6 @@ public class ReportActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(myIntent);
-                // stopped working
             }
         });
     }
