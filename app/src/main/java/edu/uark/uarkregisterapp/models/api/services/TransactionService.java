@@ -62,7 +62,7 @@ public class TransactionService extends BaseRemoteService {
         return apiResponse;
     }
 
-    TransactionService(ApiObject apiObject) {
+    public TransactionService() {
         super(ApiObject.TRANSACTION);
     }
 }

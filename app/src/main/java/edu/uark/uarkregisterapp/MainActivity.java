@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         // for demo purposes
         if (this.employeeTransition == null) {
             this.employeeTransition = new EmployeeTransition().setEmployeeId("0001")
-                    .setActive(true).setFirstName("Bob").setLastName("Tom");
+                    .setActive(true).setFirstName("Claire").setLastName("Tom");
         }
     }
 
