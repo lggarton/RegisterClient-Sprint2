@@ -39,7 +39,7 @@ public class TransactionReportAdapter extends BaseAdapter implements ListAdapter
         View view = convertView;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = inflater.inflate(R.layout.list_view_item_transaction_entry, null);
+            view = inflater.inflate(R.layout.transaction_report_entries, null);
         }
 
         TextView lookupCodeTextView = (TextView) view.findViewById(R.id.text_view_create_transaction_product_lookup_code);
