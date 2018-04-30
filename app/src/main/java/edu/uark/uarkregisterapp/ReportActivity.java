@@ -42,7 +42,7 @@ public class ReportActivity extends AppCompatActivity {
 
         this.transaction = new Transaction(this.transactionTransition);
         TextView totalAmountText = (TextView) this.findViewById(R.id.total);
-        totalAmountText.setText(Double.toString(transaction.getTotalAmount()));
+        totalAmountText.setText("$" + Double.toString(transaction.getTotalAmount()));
 
         returnButton = findViewById(R.id.returnButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
