@@ -42,6 +42,10 @@ public class TransactionTransition implements Parcelable {
         this.totalAmount = amt;
         return this;
     }
+    public TransactionTransition addToTotalAmount (double amt) {
+        this.totalAmount = this.totalAmount + amt;
+        return this;
+    }
 
     private boolean isRefund;
     public boolean getIsRefund() {

@@ -41,6 +41,10 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
         this.totalAmount = amt;
         return this;
     }
+    public Transaction addToTotalAmount (double amt) {
+        this.totalAmount = this.totalAmount + amt;
+        return this;
+    }
 
     private boolean isRefund;
     public boolean getIsRefund() {

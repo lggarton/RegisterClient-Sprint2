@@ -22,12 +22,12 @@
 
     <TextView
         android:id="@+id/textView"
+        android:text="@string/transaction_summary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="118dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="15dp"
-        android:text="@string/transaction_summary"
         android:textAlignment="viewStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textStyle="bold"
@@ -39,21 +39,14 @@
 
     <TextView
         android:id="@+id/total"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:clickable="false"
+        android:layout_marginTop="20dp"
         android:text="@string/total"
-        android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Subtitle"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_editor_absoluteX="@dimen/right_margin" />
 
-    <include layout="@layout/activity_products_listing"/>
-    <ScrollView
-            android:id="@+id/scroll"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:fillViewport="true"
-            android:scrollbars="vertical">
-        </ScrollView>
+    <include layout="@layout/activity_products_listing" />
 </android.support.constraint.ConstraintLayout>

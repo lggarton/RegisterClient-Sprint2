@@ -101,5 +101,4 @@ public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInt
         this.price = 0.0;
         this.transactionId = new UUID(0, 0);
     }
-
 }
