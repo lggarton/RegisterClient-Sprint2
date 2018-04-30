@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -39,6 +40,10 @@ public class ReportActivity extends AppCompatActivity {
         this.arrayList = this.getIntent().getParcelableArrayListExtra(getString(R.string.intent_extra_transaction_entries));
         this.reportAdapter = new TransactionReportAdapter(this, this.arrayList);
         this.getProductsListView().setAdapter(this.reportAdapter);
+
+        for (TransactionEntryTransition t : this.arrayList) {
+            Log.d("Test-newentry-next-next", t.getEntryId().toString());
+        }
 
         this.transaction = new Transaction(this.transactionTransition);
         TextView totalAmountText = (TextView) this.findViewById(R.id.total);
@@ -86,19 +91,9 @@ public class ReportActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(ApiResponse<Transaction> apiResponse) {
-//            this.createEmployeeAlert.dismiss();
-
-//            if (!apiResponse.isValidResponse()) {
-//                new AlertDialog.Builder(CreateEmployeeActivity.this)
-//                        .setMessage(R.string.alert_dialog_employee_create_failed)
-//                        .create()
-//                        .show();
-//                return;
-//            }
-
+            super.onPostExecute(apiResponse);
+            Log.d("Test-CT", apiResponse.getRawResponse());
         }
-
-//        private AlertDialog createEmployeeAlert;
     }
 
     private class CreateTransactionEntryTask extends AsyncTask<TransactionEntry, Void, ApiResponse<TransactionEntry>> {
@@ -114,6 +109,7 @@ public class ReportActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(ApiResponse<TransactionEntry> transactionEntryApiResponse) {
             super.onPostExecute(transactionEntryApiResponse);
+            Log.d("Test-CTE", transactionEntryApiResponse.getRawResponse());
         }
     }
 }

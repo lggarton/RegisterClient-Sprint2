@@ -120,6 +120,8 @@ public class CreateTransactionActivity extends AppCompatActivity {
         newEntry.setTransactionId(transaction.getId());
         newEntry.setPrice(selectedProduct.getPrice());
 
+        Log.d("Test-newentry", newEntry.getTransactionId().toString());
+
         transactionEntries.add(newEntry);
         listAdapter.notifyDataSetChanged();
     }
@@ -153,6 +155,10 @@ public class CreateTransactionActivity extends AppCompatActivity {
         ArrayList<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
         for (TransactionEntry entry : this.transactionEntries) {
             entryTransitions.add(new TransactionEntryTransition(entry));
+        }
+
+        for (TransactionEntryTransition t : entryTransitions) {
+            Log.d("Test-newentry-next", t.getTransactionId().toString());
         }
 
         Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
