@@ -9,6 +9,7 @@ import java.util.UUID;
 import edu.uark.uarkregisterapp.models.api.fields.TransactionEntryFieldName;
 import edu.uark.uarkregisterapp.models.api.interfaces.ConvertToJsonInterface;
 import edu.uark.uarkregisterapp.models.api.interfaces.LoadFromJsonInterface;
+import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
 
 public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInterface {
 
@@ -100,5 +101,13 @@ public class TransactionEntry implements ConvertToJsonInterface, LoadFromJsonInt
         this.quantity = 0;
         this.price = 0.0;
         this.transactionId = new UUID(0, 0);
+    }
+
+    public TransactionEntry(TransactionEntryTransition transition) {
+        this.entryId = transition.getEntryId();
+        this.lookupCode = transition.getLookupCode();
+        this.quantity = transition.getQuantity();
+        this.price = transition.getPrice();
+        this.transactionId = transition.getTransactionId();
     }
 }
