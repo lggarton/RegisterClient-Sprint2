@@ -4,12 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import java.util.List;
 import android.widget.ListView;
 
-import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class ReportActivity extends AppCompatActivity {
@@ -26,8 +23,8 @@ public class ReportActivity extends AppCompatActivity {
         this.transactionTransition = this.getIntent().getParcelableExtra(this.getString(R.string.intent_extra_transaction));
         if (this.getIntent() != null) {
             list = findViewById(R.id.list_view_products);
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, getEntries());
-            list.setAdapter(adapter);
+//            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, getEntries());
+//            list.setAdapter(adapter);
             // does not print out the list -- still working on this
         }
 
@@ -45,9 +42,9 @@ public class ReportActivity extends AppCompatActivity {
         return this.transactionTransition.getTotalAmount();
     }
 
-    private List<TransactionEntryTransition> getEntries() {
-        return this.transactionTransition.getEntryTransitions();
-    }
+//    private List<TransactionEntryTransition> getEntries() {
+//        return this.transactionTransition.getEntryTransitions();
+//    }
 
     private ListView getTransactions() {
         return (ListView) this.findViewById(R.id.list_view_products);

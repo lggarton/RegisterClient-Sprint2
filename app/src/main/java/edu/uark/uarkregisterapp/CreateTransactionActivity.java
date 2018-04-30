@@ -31,7 +31,8 @@ import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class CreateTransactionActivity extends AppCompatActivity {
 
-    public static final String TAG = "CreateTransaction";
+    private static final String TAG = "CreateTransaction";
+    private static final String DEMO_CASHIER_ID = "0001";
 
     private Transaction transaction;
     private EmployeeTransition employeeTransition;
@@ -62,6 +63,8 @@ public class CreateTransactionActivity extends AppCompatActivity {
         transaction.setId(UUID.randomUUID());
         if (this.employeeTransition != null) {
             transaction.setCashierId(this.employeeTransition.getEmployeeId());
+        } else {
+            transaction.setCashierId(DEMO_CASHIER_ID);
         }
         transaction.setIsRefund(false);
 
