@@ -13,6 +13,7 @@ import java.util.UUID;
 import edu.uark.uarkregisterapp.models.api.fields.TransactionFieldName;
 import edu.uark.uarkregisterapp.models.api.interfaces.ConvertToJsonInterface;
 import edu.uark.uarkregisterapp.models.api.interfaces.LoadFromJsonInterface;
+import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
 public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterface {
     private UUID id;
@@ -127,5 +128,14 @@ public class Transaction implements ConvertToJsonInterface, LoadFromJsonInterfac
         this.isRefund = false;
         this.referenceId = new UUID(0, 0);
         this.createdOn = new Date();
+    }
+
+    public Transaction(TransactionTransition transition) {
+        this.id = transition.getId();
+        this.cashierId = transition.getCashierId();
+        this.totalAmount = transition.getTotalAmount();
+        this.isRefund = transition.getIsRefund();
+        this.referenceId = transition.getReferenceId();
+        this.createdOn = transition.getCreatedOn();
     }
 }
