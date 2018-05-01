@@ -26,6 +26,7 @@ import edu.uark.uarkregisterapp.models.api.Transaction;
 import edu.uark.uarkregisterapp.models.api.TransactionEntry;
 import edu.uark.uarkregisterapp.models.api.services.ProductService;
 import edu.uark.uarkregisterapp.models.transition.EmployeeTransition;
+import edu.uark.uarkregisterapp.models.transition.ProductTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionEntryTransition;
 import edu.uark.uarkregisterapp.models.transition.TransactionTransition;
 
@@ -152,9 +153,14 @@ public class CreateTransactionActivity extends AppCompatActivity {
 
         transaction.setTotalAmount(getTotalTransactionCost());
 
+        ArrayList<ProductTransition> productTransitions = new ArrayList<>();
+
         ArrayList<TransactionEntryTransition> entryTransitions = new ArrayList<TransactionEntryTransition>();
         for (TransactionEntry entry : this.transactionEntries) {
             entryTransitions.add(new TransactionEntryTransition(entry));
+
+            Product p = getProduct(entry.getLookupCode());
+            productTransitions.add(new ProductTransition(p));
         }
 
         for (TransactionEntryTransition t : entryTransitions) {
@@ -164,6 +170,7 @@ public class CreateTransactionActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), ReportActivity.class);
         intent.putParcelableArrayListExtra(getString(R.string.intent_extra_transaction_entries), entryTransitions);
         intent.putExtra(getString(R.string.intent_extra_transaction), new TransactionTransition(this.transaction));
+        intent.putParcelableArrayListExtra(getString(R.string.intent_extra_product), productTransitions);
 //        intent.putExtra(getString(R.string.intent_extra_transaction),
 //                entryTransitions[0]);
 
