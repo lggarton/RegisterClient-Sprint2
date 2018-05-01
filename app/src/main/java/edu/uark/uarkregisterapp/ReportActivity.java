@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import edu.uark.uarkregisterapp.adapters.TransactionReportAdapter;
 import edu.uark.uarkregisterapp.models.api.ApiResponse;
@@ -47,7 +48,7 @@ public class ReportActivity extends AppCompatActivity {
 
         this.transaction = new Transaction(this.transactionTransition);
         TextView totalAmountText = (TextView) this.findViewById(R.id.total);
-        totalAmountText.setText("$" + Double.toString(transaction.getTotalAmount()));
+        totalAmountText.setText(String.format(Locale.getDefault(), "$%.2f" , this.transaction.getTotalAmount()));
 
         returnButton = findViewById(R.id.returnButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
